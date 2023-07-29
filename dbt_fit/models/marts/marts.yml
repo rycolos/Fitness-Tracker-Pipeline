@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: date_spine
+    description: "Date spine for date-based aggregations."
+  - name: weight_by_day
+    description: "Weight by day of the year."
+  - name: weight_by_week
+    description: "Weight averaged by week of the year."
+  - name: weight_by_month
+    description: "Weight averaged by month."

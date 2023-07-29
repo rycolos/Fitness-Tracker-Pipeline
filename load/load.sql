@@ -1,0 +1,1 @@
+\copy raw.raw__weight_daily from 'raw_data/raw.csv' WITH (HEADER, delimiter ',', FORMAT csv, NULL '');

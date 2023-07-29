@@ -1,0 +1,8 @@
+#terraform.tfvars
+access_key = 
+secret_key =
+db_user =
+db_pass =
+dev_pc = 
+ami_id =
+ami_key_pair_name =

@@ -1,0 +1,14 @@
+.DS_Store
+.env
+credentials.json
+token.json
+raw_data
+config.yaml
+logs
+dbt-venv
+
+#terraform
+.terraform
+terraform.tfstate
+terraform.tfstate.backup
+terraform.tfvars

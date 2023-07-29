@@ -1,0 +1,9 @@
+database_info:
+    database: databasename
+    table: table to upload to
+    username: username
+    password: password
+    host: host ip or address
+    port: port
+data:
+    file: file path

@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Daily entry data from Google Sheet, brought in via Python load process."
+    tables:
+      - name: raw__weight_daily
+        columns:
+        - name: record__ts
+          tests:
+            - not_null
+            - unique

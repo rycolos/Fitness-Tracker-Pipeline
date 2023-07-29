@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: stg__weight_daily
+    description: "Staged version of raw data with typecasting and unique/not null tests"
+    columns:
+      - name: record__ts
+        tests:
+          - not_null
+          - unique

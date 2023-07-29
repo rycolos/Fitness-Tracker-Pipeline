@@ -1,0 +1,12 @@
+dbt_fit:
+    target: dev
+    outputs:
+      dev:
+        type: postgres
+        threads: 1
+        host: fitness-db.cpaiz9edoeuq.us-east-1.rds.amazonaws.com
+        port: 5432
+        user: postgres1
+        pass: postgres1
+        dbname: postgres
+        schema: dbt_rl

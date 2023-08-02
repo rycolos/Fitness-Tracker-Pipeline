@@ -43,6 +43,7 @@ Transformation is run daily on an EC2 instance.
 ### dbt run
 `dbt snapshot --profiles-dir=profiles`
 `dbt run --profiles-dir=profiles`
+
 `dbt test --profiles-dir=profiles`
 
 ## dbt models

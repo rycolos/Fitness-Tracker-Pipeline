@@ -12,7 +12,8 @@ Creates Postgres RDS instance and Ubuntu EC2 instance needed for scheduled load 
 2. Install Git - `sudo apt install git`
 3. Install pip - `sudo apt install python3-pip`
 4. Install venv - `sudo apt install python3.8-venv`
-5. Clone git repo
+5. Create `log` directory in home directory for run logs - `mkdir -p ~/log`
+5. Clone git repo in home directory
 6. Create venv in repo - `cd fitness-tracker-pipeline && python3 -m venv dbt-venv`
 7. Activate venv - `source dbt-venv/bin/activate`
 8. Install dbt - `python -m pip install dbt-postgres`

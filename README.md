@@ -1,7 +1,7 @@
 # Fitness Tracker Pipeline
 
 ## Deploy with Terraform
-Creates Postgres RDS instance and EC2 instance needed for scheduled load and transform
+Creates Postgres RDS instance and Ubuntu EC2 instance needed for scheduled load and transform
 1. Update variables as needed in `variables.tf` and `terraform.tfvars`, removing `TEMPLATE` from the filename
 2. `terraform init` if new clone
 3. `terraform plan` and verify
@@ -13,11 +13,11 @@ Creates Postgres RDS instance and EC2 instance needed for scheduled load and tra
 3. Install pip - `sudo apt install python3-pip`
 4. Install venv - `sudo apt install python3.8-venv`
 5. Clone git repo
-6. Create venv in repo - `cd DIR && python3 -m venv dbt-venv`
+6. Create venv in repo - `cd fitness-tracker-pipeline && python3 -m venv dbt-venv`
 7. Activate venv - `source dbt-venv/bin/activate`
 8. Install dbt - `python -m pip install dbt-postgres`
-9. Install load script requirements - `cd load && python -m pip install -r requirements.txt`
-10. Update (if needed) and verify dbt profiles.yml - `dbt debug --profiles-dir=profiles`
+9. Update (if needed) and verify dbt profiles.yml - `cd dbt_fit && dbt debug --profiles-dir=profiles`
+10. Install load script requirements - `cd load && python -m pip install -r requirements.txt`
 
 ## Create Raw `raw__weight_daily` table
 `psql --host=fitness-db.cpaiz9edoeuq.us-east-1.rds.amazonaws.com --port=5432 --username=postgres1 --password --dbname=postgres -f infra/db_init/create_raw.sql`
@@ -30,7 +30,7 @@ Creates Postgres RDS instance and EC2 instance needed for scheduled load and tra
 Weight is input daily on my local machine with `sh load/data_log.sh ARG` where the argument is my daily weight.
 
 ### Daily extract and load
-`python3 load/data_load.py` parses db info and data location from config.yaml, extracts dataframe from raw data file, and inserts into `raw` schema table in RDS Postgres. Triggered manually on local machine following data input step.
+Triggered manually on local machine following data input step. `python3 load/data_load.py` parses db info and data location from config.yaml, extracts dataframe from raw data file, and inserts into `raw` schema table in RDS Postgres. 
 
 ### Google Sheet
 Originally, I was inputting data into a Google Sheet and intended to load that automatically into RDS. Unfortunately, I am deprecating this method as Google makes auth against a private sheet too cumbersome to manage. 

@@ -18,6 +18,8 @@ Creates Postgres RDS instance and Ubuntu EC2 instance needed for scheduled load 
 8. Install dbt - `python -m pip install dbt-postgres`
 9. Update (if needed) and verify dbt profiles.yml - `cd dbt_fit && dbt debug --profiles-dir=profiles`
 10. Install load script requirements - `cd load && python -m pip install -r requirements.txt`
+11. Ensure git doesn't read changed permissions as a new file - `git config core.fileMode false`
+12. Make run script executable - `cd infra/scripts && sudo chmod u+x run.sh`
 
 ## Create Raw `raw__weight_daily` table
 `psql --host=fitness-db.cpaiz9edoeuq.us-east-1.rds.amazonaws.com --port=5432 --username=postgres1 --password --dbname=postgres -f infra/db_init/create_raw.sql`

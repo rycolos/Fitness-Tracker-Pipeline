@@ -20,6 +20,7 @@ Creates Postgres RDS instance and Ubuntu EC2 instance needed for scheduled load 
 9. Update (if needed) and verify dbt profiles.yml - `cd dbt_fit && dbt debug --profiles-dir=profiles`
 10. Install load script requirements - `cd load && python -m pip install -r requirements.txt`
 11. Ensure git doesn't read changed permissions as a new file - `git config core.fileMode false`
+See [here](https://stackoverflow.com/questions/2517339/how-to-restore-the-permissions-of-files-and-directories-within-git-if-they-have).
 12. Make run script executable - `cd infra/scripts && sudo chmod u+x run.sh`
 
 ## Create Raw `raw__weight_daily` table
@@ -39,7 +40,8 @@ Triggered manually on local machine following data input step. `python3 load/dat
 Originally, I was inputting data into a Google Sheet and intended to load that automatically into RDS. Unfortunately, I am deprecating this method as Google makes auth against a private sheet too cumbersome to manage. 
 
 ## Transform
-Transformation is run daily on an EC2 instance. 
+Transformation is run daily at 0600 UTC on an EC2 instance. 
+`0 6 * * * /home/ubuntu/fitness-tracker-pipeline/infra/scripts/run.sh`
 
 ### dbt run
 `dbt snapshot --profiles-dir=profiles`

@@ -39,9 +39,9 @@ Triggered manually on local machine following data input step. `python3 load/dat
 ### Google Sheet
 Originally, I was inputting data into a Google Sheet and intended to load that automatically into RDS. Unfortunately, I am deprecating this method as Google makes auth against a private sheet too cumbersome to manage. 
 
-## Transform
-Transformation is run daily at 0600 UTC on an EC2 instance. 
-`0 6 * * * /home/ubuntu/fitness-tracker-pipeline/infra/scripts/run.sh`
+## Transformation and Monitoring
+Transformation is run daily at 0600 UTC on an EC2 instance. Monitoring is configured via (healthchecks.io)[https://healthchecks.io]. Simple logging is configured as part of the run script.
+`0 6 * * * /home/ubuntu/fitness-tracker-pipeline/infra/scripts/run.sh && curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/UUID`
 
 ### dbt run
 `dbt snapshot --profiles-dir=profiles`

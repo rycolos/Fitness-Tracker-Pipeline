@@ -23,6 +23,10 @@ Creates Postgres RDS instance and Ubuntu EC2 instance needed for scheduled load 
 See [here](https://stackoverflow.com/questions/2517339/how-to-restore-the-permissions-of-files-and-directories-within-git-if-they-have).
 12. Make run script executable - `cd infra/scripts && sudo chmod u+x run.sh`
 
+## Automated EC2 Configuration with Ansible
+`ansible-playbook -i inventory.yaml config_transform_ec2
+.yaml --key-file "KEY PATH"`
+
 ## Create Raw `raw__weight_daily` table
 `psql --host=fitness-db.cpaiz9edoeuq.us-east-1.rds.amazonaws.com --port=5432 --username=postgres1 --password --dbname=postgres -f infra/db_init/create_raw.sql`
 

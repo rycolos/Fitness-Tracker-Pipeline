@@ -72,8 +72,9 @@ The run script triggers a git pull and activates the venv to trigger a dbt snaps
 * Weight by Week - join on date spine to avg weight per week
 * Weight by Month - join on date spine to avg weight per month
 
-### BI - Hex
-* Need to add Hex IPs to Terraform ingress whitelist
+### BI and Analytics - Hex
+(Hex)[hex.tech] is being using for BI and analytics. 
+It is necessary to add the following Hex IPs to the Terraform ingress whitelist
 ```
 3.129.36.245
 3.13.16.99

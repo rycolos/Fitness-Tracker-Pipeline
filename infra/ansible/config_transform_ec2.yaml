@@ -1,9 +1,10 @@
 ---
 - hosts: all_servers
+  
+  #UPDATE REMOTE USER
   remote_user: ubuntu 
 
   tasks:
-    
     - name: install git, pip, venv
       become: yes
       apt: 

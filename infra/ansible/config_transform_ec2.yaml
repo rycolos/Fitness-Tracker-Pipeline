@@ -1,0 +1,54 @@
+---
+- hosts: all_servers
+  remote_user: ubuntu 
+
+  tasks:
+    
+    - name: install git, pip, venv
+      become: yes
+      apt: 
+        name:
+          - git
+          - python3-pip
+          - python3.8-venv
+        update_cache: yes
+        state: latest
+    
+    - name: create dir for logs
+      file:
+        path: "/home/{{ ansible_user }}/log"
+        mode: 0775
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        state: directory
+   
+    - name: clone github repo
+      git:
+        repo: https://github.com/rycolos/fitness-tracker-pipeline.git
+        dest: /home/{{ ansible_user }}/test/fitness-tracker-pipeline
+        clone: yes
+        update: yes
+
+    - name: create venv
+      command:
+        cmd: python3 -m venv /home/{{ ansible_user }}/test/fitness-tracker-pipeline/dbt-venv
+        creates: "/home/{{ ansible_user }}/test/fitness-tracker-pipeline/dbt-venv"
+
+    - name: install load script reqs
+      command:
+        cmd: /home/{{ ansible_user }}/test/fitness-tracker-pipeline/dbt-venv/bin/pip3 install -r /home/{{ ansible_user }}/test/fitness-tracker-pipeline/load/requirements.txt
+
+    - name: install dbt
+      command:
+        cmd: /home/{{ ansible_user }}/test/fitness-tracker-pipeline/dbt-venv/bin/pip3 install dbt-postgres
+    
+    - name: set git fileMode false
+      git_config:
+        name: core.fileMode
+        scope: global
+        value: "false"
+        state: present
+
+    - name: Make run script executable
+      become: yes
+      file: dest=/home/{{ ansible_user }}/test/fitness-tracker-pipeline/infra/scripts/run.sh mode=u+x

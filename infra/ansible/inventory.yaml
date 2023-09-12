@@ -1,0 +1,5 @@
+all_servers:
+  hosts:
+    #add ec2 instance
+    ec2-3-92-77-188.compute-1.amazonaws.com:
+

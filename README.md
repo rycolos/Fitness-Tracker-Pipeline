@@ -24,8 +24,13 @@ See [here](https://stackoverflow.com/questions/2517339/how-to-restore-the-permis
 12. Make run script executable - `cd infra/scripts && sudo chmod u+x run.sh`
 
 ## Automated EC2 Configuration with Ansible
-`ansible-playbook -i inventory.yaml config_transform_ec2
-.yaml --key-file "KEY PATH"`
+1. Add host to inventory.yaml
+2. Update remote_user in `config_transform_ec2.yaml` if needed
+3. Run `ansible-playbook -i inventory.yaml config_transform_ec2.yaml --key-file "KEY PATH"` referencing path to AWS .pem key
+4. Log in to instance to update dbt project and verify connection: `dbt debug --profiles-dir=profiles`
+5. Create cron job for run and update healthchecks.io monitoring UUID
+
+still need to manually config cron and verify dbt is working with debug
 
 ## Create Raw `raw__weight_daily` table
 `psql --host=fitness-db.cpaiz9edoeuq.us-east-1.rds.amazonaws.com --port=5432 --username=postgres1 --password --dbname=postgres -f infra/db_init/create_raw.sql`

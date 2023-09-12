@@ -47,25 +47,26 @@ See [here](https://stackoverflow.com/questions/2517339/how-to-restore-the-permis
 Create `raw__weight_daily` table in RDS: 
 `psql --host=RDS-INSTANCE --port=5432 --username=USER --password --dbname=DB -f infra/db_init/create_raw.sql`
 
-### Create, Extract, and Load
+### Create
 #### Initial load of any preexistent data
 `psql --host=RDS-INSTANCE --port=5432 --username=USER --password --dbname=DB -f load/load.sql`
 
 #### Create data - Shell Script
 Weight is input daily on my local machine with `sh load/data_log.sh ARG` where the argument is my daily weight.
 
+### Extract, Load, Transform
 #### Daily extract and load
 Extract and load is triggered manually on local machine following data input step. `python3 load/data_load.py` parses db info and data location from config.yaml, extracts dataframe from raw data file, and inserts into `raw` schema table in RDS Postgres. 
 
-#### Google Sheet
+##### Google Sheet
 Originally, I was inputting data into a Google Sheet and intended to load that automatically into RDS. Unfortunately, I am deprecating this method as Google makes auth against a private sheet too cumbersome to manage. 
 
-### Transformation and Monitoring
+#### Transformation and Monitoring
 Transformation via dbt is run daily at 0600 UTC on an EC2 instance. Monitoring is configured via (healthchecks.io)[https://healthchecks.io]. Simple logging is configured as part of the run script.
 
 The run script triggers a git pull and activates the venv to trigger a dbt snapshot, run, and test. Outputs are logged and logs are automatically deleted after 14d. 
 
-### dbt models
+#### dbt models
 * Date Spine - simple date spine of date components for easier date aggregation
 * Weight by Day - join on date spine for weight by day
 * Weight by Week - join on date spine to avg weight per week

@@ -1,13 +1,15 @@
 # Fitness Tracker Pipeline
 
-## Deploy with Terraform
+## Infrastructure
+### Deploy assets with Terraform
 Creates Postgres RDS instance and Ubuntu EC2 instance needed for scheduled load and transform
 1. Update variables as needed in `variables.tf` and `terraform.tfvars`, removing `TEMPLATE` from the filename
 2. `terraform init` if new clone
 3. `terraform plan` and verify
 4. `terraform apply`
 
-### Manual EC2 Configuration
+### Configure EC2 for daily transformation
+#### Manual EC2 Configuration
 1. Update repos - `sudo apt update`
 2. Install Git - `sudo apt install git`
 3. Install pip - `sudo apt install python3-pip`
@@ -23,47 +25,46 @@ Creates Postgres RDS instance and Ubuntu EC2 instance needed for scheduled load 
 See [here](https://stackoverflow.com/questions/2517339/how-to-restore-the-permissions-of-files-and-directories-within-git-if-they-have).
 12. Make run script executable - `cd infra/scripts && sudo chmod u+x run.sh`
 
-## Automated EC2 Configuration with Ansible
+#### Automated EC2 Configuration with Ansible
 1. Add host to inventory.yaml
 2. Update remote_user in `config_transform_ec2.yaml` if needed
 3. Run `ansible-playbook -i inventory.yaml config_transform_ec2.yaml --key-file "KEY PATH"` referencing path to AWS .pem key
 4. Log in to instance to update dbt project and verify connection: `dbt debug --profiles-dir=profiles`
 5. Create cron job for run and update healthchecks.io monitoring UUID
 
-still need to manually config cron and verify dbt is working with debug
-
-## Create Raw `raw__weight_daily` table
+## Data
+### Create Raw `raw__weight_daily` table
 `psql --host=fitness-db.cpaiz9edoeuq.us-east-1.rds.amazonaws.com --port=5432 --username=postgres1 --password --dbname=postgres -f infra/db_init/create_raw.sql`
 
-## Create, Extract, and Load
-### Initial load of preexistent data
+### Create, Extract, and Load
+#### Initial load of preexistent data
 `psql --host=fitness-db.cpaiz9edoeuq.us-east-1.rds.amazonaws.com --port=5432 --username=postgres1 --password --dbname=postgres -f load/load.sql`
 
-### Create data - Shell Script
+#### Create data - Shell Script
 Weight is input daily on my local machine with `sh load/data_log.sh ARG` where the argument is my daily weight.
 
-### Daily extract and load
+#### Daily extract and load
 Triggered manually on local machine following data input step. `python3 load/data_load.py` parses db info and data location from config.yaml, extracts dataframe from raw data file, and inserts into `raw` schema table in RDS Postgres. 
 
-### Google Sheet
+#### Google Sheet
 Originally, I was inputting data into a Google Sheet and intended to load that automatically into RDS. Unfortunately, I am deprecating this method as Google makes auth against a private sheet too cumbersome to manage. 
 
-## Transformation and Monitoring
+### Transformation and Monitoring
 Transformation is run daily at 0600 UTC on an EC2 instance. Monitoring is configured via (healthchecks.io)[https://healthchecks.io]. Simple logging is configured as part of the run script.
 `0 6 * * * /home/ubuntu/fitness-tracker-pipeline/infra/scripts/run.sh && curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/UUID`
 
-### dbt run
+#### dbt run
 `dbt snapshot --profiles-dir=profiles`
 `dbt run --profiles-dir=profiles`
 
 `dbt test --profiles-dir=profiles`
 
-## dbt models
+### dbt models
 * Weight by Day - join on date spine for weight by day
 * Weight by Week - join on date spine to avg weight per week
 * Weight by Month - join on date spine to avg weight per month
 
-## BI - Hex
+### BI - Hex
 * Added Hex IPs to Terraform ingress whitelist
 ```
 3.129.36.245

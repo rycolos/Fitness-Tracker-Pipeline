@@ -62,7 +62,7 @@ Extract and load is triggered manually on local machine following data input ste
 Originally, I was inputting data into a Google Sheet and intended to load that automatically into RDS. Unfortunately, I am deprecating this method as Google makes auth against a private sheet too cumbersome to manage. 
 
 #### Transformation and Monitoring
-Transformation via dbt is run daily at 0600 UTC on an EC2 instance. Monitoring is configured via [healthcecks.io](https://healthchecks.io). Simple logging is configured as part of the run script.
+Transformation via dbt is run daily at 0600 UTC on an EC2 instance. Monitoring is configured via [healthchecks.io](https://healthchecks.io). Simple logging is configured as part of the run script.
 
 The run script triggers a git pull and activates the venv to trigger a dbt snapshot, run, and test. Outputs are logged and logs are automatically deleted after 14d. 
 

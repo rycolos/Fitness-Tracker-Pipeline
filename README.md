@@ -1,7 +1,7 @@
 # Fitness Tracker Pipeline
 
 ## Description
-This project was an attempt to familiarize myself with Terraform and Ansible for data pipeline use cases, as well as solve a personal need for a weight tracking and analytics mechanism with better visualization that Google Sheets, but not tied to a commercial health platform. 
+This project was an attempt to familiarize myself with Terraform and Ansible for data pipeline use cases, as well as solve a personal need for a weight tracking and analytics mechanism with better visualization capabilities than Google Sheets, but not tied to a commercial health platform. 
 
 ## Requirements
 * psql

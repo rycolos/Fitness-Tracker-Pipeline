@@ -1,5 +1,8 @@
 # Fitness Tracker Pipeline
 
+## Description
+This project was an attempt to familiarize myself with Terraform and Ansible for data pipeline use cases, as well as solve a personal need for a weight tracking and analytics mechanism with better visualization that Google Sheets, but not tied to a commercial health platform. 
+
 ## Requirements
 * psql
 * terraform
@@ -36,10 +39,10 @@ See [here](https://stackoverflow.com/questions/2517339/how-to-restore-the-permis
 13. Create cron job and input healthchecks.io UUID: `0 6 * * * /home/ubuntu/fitness-tracker-pipeline/infra/scripts/run.sh && curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/UUID`
 
 #### Automated EC2 Configuration with Ansible
-1. Add host to inventory.yaml
+1. Add host to `inventory.yaml`
 2. Update remote_user in `config_transform_ec2.yaml` if needed
 3. Run `ansible-playbook -i inventory.yaml config_transform_ec2.yaml --key-file "KEY PATH"` referencing path to AWS .pem key
-4. Log in to instance to update dbt project and verify connection: `dbt debug --profiles-dir=profiles`
+4. SSH in to instance to update dbt project and verify connection: `dbt debug --profiles-dir=profiles`
 5. Create cron job for run and update healthchecks.io monitoring UUID:  `0 6 * * * /home/ubuntu/fitness-tracker-pipeline/infra/scripts/run.sh && curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/UUID`
 
 ## Data
@@ -80,6 +83,3 @@ It is necessary to add the following Hex IPs to the Terraform ingress whitelist
 3.13.16.99
 3.18.79.139
 ```
-
-## Resources
-* Followed this guide to get scheduling configured https://kleandata.substack.com/p/cron-dbt-cloud-and-airflow-3-ways
